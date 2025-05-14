@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact Us</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f7f6;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .contact-form-container {
+      background: linear-gradient(135deg, #00bcd4, #8e44ad);
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      max-width: 600px;
+      width: 100%;
+      color: white;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 2rem;
+      font-weight: 600;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 1rem;
+    }
+
+    .form-group input, 
+    .form-group textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+      background: #f9f9f9;
+      transition: border 0.3s ease;
+    }
+
+    .form-group input:focus, 
+    .form-group textarea:focus {
+      border-color: #00bcd4;
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 150px;
+    }
+
+    .form-group button {
+      width: 100%;
+      padding: 12px;
+      background-color: #00bcd4;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .form-group button:hover {
+      background-color: #008c99;
+    }
+
+    .form-group button:disabled {
+      background-color: #cccccc;
+      cursor: not-allowed;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      font-size: 1rem;
+    }
+
+    .success-message {
+      text-align: center;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: green;
+    }
+
+    @media (max-width: 600px) {
+      .contact-form-container {
+        padding: 20px;
+      }
+
+      h2 {
+        font-size: 1.5rem;
+      }
+
+      .form-group button {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="contact-form-container">
+    <h2>Contact Us</h2>
+    <form id="contactForm">
+      <div class="form-group">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" name="name" required placeholder="Your full name">
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" required placeholder="Your email address">
+      </div>
+
+      <div class="form-group">
+        <label for="subject">Subject</label>
+        <input type="text" id="subject" name="subject" required placeholder="Subject of your message">
+      </div>
+
+      <div class="form-group">
+        <label for="message">Message</label>
+        <textarea id="message" name="message" required placeholder="Your message here..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <button type="submit">Send Message</button>
+      </div>
+
+      <div id="successMessage" class="success-message" style="display: none;">Your message has been sent successfully!</div>
+    </form>
+  </div>
+
+  <script>
+    // Simulate form submission
+    document.getElementById('contactForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      // Simulate success response (usually done by the server)
+      const form = e.target;
+      const successMessage = document.getElementById('successMessage');
+
+      // Simulate sending email (server-side task)
+      setTimeout(function () {
+        successMessage.style.display = 'block';
+        form.reset();
+      }, 1000); // Simulate a delay for email sending
+    });
+  </script>
+
+</body>
+</html>

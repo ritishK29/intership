@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Luxury Lazy Loading</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #111;
+      color: white;
+      overflow-x: hidden;
+    }
+
+    h1 {
+      text-align: center;
+      padding: 2rem;
+      font-size: 2.8rem;
+      color: #00ffe5;
+      text-shadow: 0 0 10px rgba(0, 255, 255, 0.6);
+    }
+
+    .gallery {
+      max-width: 1000px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    .img-wrapper {
+      margin: 50px 0;
+      overflow: hidden;
+      border-radius: 16px;
+      box-shadow: 0 0 20px rgba(255,255,255,0.1);
+    }
+
+    .img-wrapper img {
+      width: 100%;
+      display: block;
+      filter: blur(12px);
+      transition: filter 1s ease, transform 0.5s ease;
+      transform: scale(1.05);
+    }
+
+    .img-wrapper img.loaded {
+      filter: blur(0);
+      transform: scale(1);
+    }
+  </style>
+</head>
+<body>
+
+  <h1> Lazy Loading Gallery</h1>
+
+  <div class="gallery">
+    <div class="img-wrapper">
+      <img data-src="premium_photo-1669927131902-a64115445f0f.avif" alt="Desk Image" />
+    </div>
+    <div class="img-wrapper">
+      <img data-src="premium_photo-1683736986835-6f5a253ca955.avif" alt="Reading & Coding" />
+    </div>
+    <div class="img-wrapper">
+      <img data-src="workspace-2167299_640.webp" alt="Workspace" />
+    </div>
+  </div>
+
+  <script>
+    const images = document.querySelectorAll('img');
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const img = entry.target;
+          img.src = img.dataset.src;
+          img.onload = () => img.classList.add('loaded');
+          observer.unobserve(img);
+        }
+      });
+    });
+
+    images.forEach(img => {
+      observer.observe(img);
+    });
+  </script>
+
+</body>
+</html>

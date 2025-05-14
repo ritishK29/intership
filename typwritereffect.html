@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Typewriter Effect</title>
+  <style>
+    body {
+      background-color: #0e0e0e;
+      color: #f8fcfb;
+      font-family: 'Courier New', Courier, monospace;
+      height: 100vh;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+
+    .typewriter {
+      font-size: 2rem;
+      font-weight: bold;
+      white-space: nowrap;
+      overflow: hidden;
+      border-right: 2px solid #fafcfc;
+      width: 20ch;
+      animation: blink 0.75s step-end infinite;
+    }
+
+    @keyframes blink {
+      from, to { border-color: transparent }
+      50% { border-color: #feffff; }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Hello, I'm Ritish 👋</h1>
+  <div class="typewriter" id="typewriter-text"></div>
+
+  <script>
+    const phrases = [
+      "Frontend Developer",
+      "Java Programmer",
+      "Intern @Dynamite Webtech",
+      "Problem Solver",
+      "Future Full Stack Dev"
+    ];
+
+    let currentPhrase = 0;
+    let currentChar = 0;
+    const textDisplay = document.getElementById("typewriter-text");
+
+    function typeEffect() {
+      const phrase = phrases[currentPhrase];
+      textDisplay.textContent = phrase.substring(0, currentChar);
+
+      if (currentChar < phrase.length) {
+        currentChar++;
+        setTimeout(typeEffect, 100);
+      } else {
+        setTimeout(() => eraseEffect(), 1500);
+      }
+    }
+
+    function eraseEffect() {
+      const phrase = phrases[currentPhrase];
+      textDisplay.textContent = phrase.substring(0, currentChar);
+
+      if (currentChar > 0) {
+        currentChar--;
+        setTimeout(eraseEffect, 50);
+      } else {
+        currentPhrase = (currentPhrase + 1) % phrases.length;
+        setTimeout(typeEffect, 300);
+      }
+    }
+
+    // Start typing effect
+    typeEffect();
+  </script>
+
+</body>
+</html>

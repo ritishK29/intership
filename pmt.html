@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Project Management Tool</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #2193b0, #6dd5ed);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding: 40px 20px;
+      color: #333;
+    }
+
+    .container {
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+      max-width: 960px;
+      width: 100%;
+      padding: 30px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 30px;
+      font-size: 2.2rem;
+    }
+
+    .form-section {
+      margin-bottom: 30px;
+    }
+
+    input, textarea, button {
+      width: 100%;
+      padding: 14px;
+      margin: 10px 0;
+      font-size: 1rem;
+      border-radius: 10px;
+      border: 1px solid #ddd;
+      transition: all 0.3s ease;
+    }
+
+    input:focus, textarea:focus {
+      border-color: #2196f3;
+      background: #f0faff;
+      outline: none;
+    }
+
+    button {
+      background: #2196f3;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      border: none;
+      transition: background 0.3s ease, transform 0.2s;
+    }
+
+    button:hover {
+      background: #1769aa;
+      transform: scale(1.03);
+    }
+
+    .project-item {
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 12px;
+      background-color: #f9f9f9;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
+    }
+
+    .project-item h3 {
+      margin-top: 0;
+    }
+
+    .task-list {
+      margin-top: 15px;
+    }
+
+    .task-item {
+      background: #ffffff;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .task-item h4 {
+      margin: 0 0 5px;
+    }
+
+    .task-item p {
+      margin: 4px 0;
+      font-size: 0.95rem;
+    }
+
+    .progress-bar {
+      height: 10px;
+      background-color: #ddd;
+      border-radius: 5px;
+      margin: 8px 0;
+      overflow: hidden;
+    }
+
+    .progress-bar span {
+      display: block;
+      height: 100%;
+      background-color: #2196f3;
+      transition: width 0.3s ease;
+    }
+
+    .task-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .task-buttons button {
+      flex: 1;
+      padding: 10px;
+      font-size: 0.9rem;
+      border-radius: 8px;
+    }
+
+    .increase {
+      background-color: #4caf50;
+    }
+
+    .increase:hover {
+      background-color: #388e3c;
+    }
+
+    .decrease {
+      background-color: #f44336;
+    }
+
+    .decrease:hover {
+      background-color: #d32f2f;
+    }
+
+    #taskForm {
+      display: none;
+      animation: fadeIn 0.5s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Project Management Tool</h2>
+
+    <!-- Project Form -->
+    <div class="form-section">
+      <input type="text" id="projectName" placeholder="Enter Project Name" />
+      <button onclick="createProject()">Create Project</button>
+    </div>
+
+    <!-- Task Form -->
+    <div class="form-section" id="taskForm">
+      <input type="text" id="taskName" placeholder="Enter Task Name" />
+      <textarea id="taskDescription" placeholder="Task Description"></textarea>
+      <input type="date" id="taskDeadline" />
+      <button onclick="addTask()">Add Task</button>
+    </div>
+
+    <!-- Projects -->
+    <div id="projectList"></div>
+  </div>
+
+  <script>
+    let projects = [];
+
+    function createProject() {
+      const projectName = document.getElementById('projectName').value.trim();
+      if (projectName) {
+        const newProject = {
+          id: Date.now(),
+          name: projectName,
+          tasks: []
+        };
+        projects.push(newProject);
+        document.getElementById('projectName').value = '';
+        renderProjects();
+      }
+    }
+
+    function renderProjects() {
+      const projectList = document.getElementById('projectList');
+      projectList.innerHTML = '';
+
+      projects.forEach(project => {
+        const projectDiv = document.createElement('div');
+        projectDiv.className = 'project-item';
+        projectDiv.innerHTML = `
+          <h3>${project.name}</h3>
+          <button onclick="showTaskForm(${project.id})">Add Task</button>
+          <div class="task-list" id="taskList-${project.id}"></div>
+        `;
+        projectList.appendChild(projectDiv);
+        renderTasks(project.id);
+      });
+    }
+
+    function showTaskForm(projectId) {
+      const taskForm = document.getElementById('taskForm');
+      taskForm.style.display = 'block';
+      taskForm.dataset.projectId = projectId;
+    }
+
+    function addTask() {
+      const projectId = document.getElementById('taskForm').dataset.projectId;
+      const taskName = document.getElementById('taskName').value.trim();
+      const taskDesc = document.getElementById('taskDescription').value.trim();
+      const taskDeadline = document.getElementById('taskDeadline').value;
+
+      if (taskName && taskDesc && taskDeadline) {
+        const task = {
+          id: Date.now(),
+          name: taskName,
+          description: taskDesc,
+          deadline: taskDeadline,
+          progress: 0
+        };
+
+        const project = projects.find(p => p.id == projectId);
+        project.tasks.push(task);
+
+        document.getElementById('taskName').value = '';
+        document.getElementById('taskDescription').value = '';
+        document.getElementById('taskDeadline').value = '';
+        renderTasks(projectId);
+      }
+    }
+
+    function renderTasks(projectId) {
+      const project = projects.find(p => p.id == projectId);
+      const taskListDiv = document.getElementById(`taskList-${projectId}`);
+      taskListDiv.innerHTML = '';
+
+      project.tasks.forEach(task => {
+        const taskDiv = document.createElement('div');
+        taskDiv.className = 'task-item';
+        taskDiv.innerHTML = `
+          <h4>${task.name}</h4>
+          <p>${task.description}</p>
+          <p><strong>Deadline:</strong> ${task.deadline}</p>
+          <div class="progress-bar">
+            <span style="width:${task.progress}%;"></span>
+          </div>
+          <div class="task-buttons">
+            <button class="increase" onclick="updateProgress(${projectId}, ${task.id}, 'increase')">+ Progress</button>
+            <button class="decrease" onclick="updateProgress(${projectId}, ${task.id}, 'decrease')">- Progress</button>
+          </div>
+        `;
+        taskListDiv.appendChild(taskDiv);
+      });
+    }
+
+    function updateProgress(projectId, taskId, action) {
+      const project = projects.find(p => p.id == projectId);
+      const task = project.tasks.find(t => t.id == taskId);
+
+      if (action === 'increase' && task.progress < 100) {
+        task.progress += 10;
+      } else if (action === 'decrease' && task.progress > 0) {
+        task.progress -= 10;
+      }
+
+      renderTasks(projectId);
+    }
+  </script>
+</body>
+</html>

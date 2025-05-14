@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Modern Preloader</title>
+  <style>
+    /* Preloader Style */
+    #preloader {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(8px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      transition: opacity 0.7s ease;
+    }
+
+    #preloader.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .loader-box {
+      padding: 40px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.25);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .loader-box img {
+      width: 100px;
+      height: auto;
+      border-radius: 10px;
+    }
+
+    .loader-text {
+  margin-top: 15px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #00ffff;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .main-content {
+      display: none;
+      color: white;
+      text-align: center;
+      margin-top: 100px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PRELOADER -->
+  <div id="preloader">
+    <div class="loader-box">
+      <img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExMjUyMHBud20wZHhtc2F4MmZpejJiZDlpbzBqNmdzZGVtb2dxdnQ2eCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Bn0JzrZxWfTKU/giphy.gif" alt="Loading...">
+      <div class="loader-text">Getting things ready...</div>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="main-content">
+    <h1>🚀 Welcome to the Stylish Site!</h1>
+    <p>Enjoy the content!</p>
+  </div>
+
+  <script>
+   window.onload = function () {
+  setTimeout(() => {
+    const preloader = document.getElementById('preloader');
+    preloader.classList.add('hidden');
+    setTimeout(() => {
+      preloader.style.display = 'none';
+      document.querySelector('.main-content').style.display = 'block';
+    }, 800);
+  }, 2000); // Adjust the delay (in milliseconds) as needed
+};
+
+  </script>
+
+</body>
+</html>
